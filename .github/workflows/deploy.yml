@@ -38,7 +38,7 @@ jobs:
         name: CD
         needs: build
         runs-on: ubuntu-latest
-        environment: dev
+        environment: Practica5
 
         steps:
             - name: Download artifact
