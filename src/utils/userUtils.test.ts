@@ -79,4 +79,9 @@ describe('deleteUser', () => {
         deleteUser(users, 1)
         expect(users).toHaveLength(3)
     })
+
+    it('returns a new array instance', () => {
+        const result = deleteUser(users, 2)
+        expect(result).not.toBe(users)
+    })
 })
