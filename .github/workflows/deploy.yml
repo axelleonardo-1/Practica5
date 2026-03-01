@@ -34,8 +34,8 @@ jobs:
                   name: dist
                   path: dist/
 
-    release:
-        name: CD
+    release-dev:
+        name: CD - Dev
         needs: build
         runs-on: ubuntu-latest
         environment: Practica5
@@ -53,3 +53,23 @@ jobs:
                   apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                   command: deploy dist/practice4/index.js --name raspy-fog-125a --compatibility-date 2026-02-26 --compatibility-flags=nodejs_compat --assets dist/client
+
+    release-prod:
+        name: CD - Production
+        needs: release-dev
+        runs-on: ubuntu-latest
+        environment: Practica5
+
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: dist
+                  path: dist/
+
+            - name: Deploy-Production
+              uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  command: deploy dist/practice4/index.js --name raspy-fog-125a--compatibility-date 2026-02-26 --compatibility-flags=nodejs_compat --assets dist/client
